@@ -11,28 +11,23 @@ int main(void)
 
 	while (a <= '9')
 	{
-		while  (b <= '9')
+		b = a + 1;
+		while (b <= '9')
 		{
-			if (!(a > b) || a == '9')
+			putchar(a);
+			putchar(b);
+			if (a == '8' && b == '9')
 			{
-				putchar(a);
-				putchar(b);
-				if (a == '8' && b == '9')
-				{
-					putchar('\n');
-				}
-				else
-				{
-					putchar(',');
-					putchar(' ');
-				}
+				putchar('\n');
+			}
+			else
+			{
+				putchar(',');
+				putchar(' ')
 			}
 			b++;
 		}
-		b = '0';
 		a++;
 	}
 	return (0);
 }
-
-
