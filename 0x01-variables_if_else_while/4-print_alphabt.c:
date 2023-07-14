@@ -1,0 +1,23 @@
+ilphabt.c:11:9: error: ‘lowercas’ undeclared (first use in this function); did you mean ‘lowercase’?
+   11 |  while (lowercas <= 'z')
+      |         ^~~~~~~~
+      |         lowercase
+4-print_alphabt.c:11:9: note: each undeclared identifier is reported only once for each function it appears in
+4-print_alphabt.c:13:6: error: expected ‘(’ before ‘lowercase’
+   13 |   if lowercase == 'e' || lowercase == 'q'
+      |      ^~~~~~~~~
+      |      (
+4-print_alphabt.c:13:6: error: statement with no effect [-Werror=unused-value]
+   13 |   if lowercase == 'e' || lowercase == 'q'
+      |      ^~~~~~~~~
+4-print_alphabt.c:16:2: error: ‘else’ without a previous ‘if’
+   16 |  else
+      |  ^~~~
+4-print_alphabt.c: At top level:
+4-print_alphabt.c:22:9: error: expected declaration specifiers or ‘...’ before '\xa'
+   22 | putchar('\n');
+      |         ^~~~
+4-print_alphabt.c:23:1: error: expected identifier or ‘(’ before ‘return’
+   23 | return (0);
+      | ^~~~~~
+4-print_alphabt.c...
