@@ -15,7 +15,7 @@ int main(void)
 		{
 			if (!(a > b) || a == '9')
 			{
-				puchar(a);
+				putchar(a);
 				putchar(b);
 				if (a == '8' && b == '9')
 				{
