@@ -1,36 +1,32 @@
 #include <stdio.h>
 /**
- * main - Entry point
- * Return: 0 (Success)
+ * main - Entry point of the code
+ * Return: 0 (Always succesful)
  */
 int main(void)
 {
-	int num1 = 0;
-	int num2 = 0;
+	int i, j;
 
-	while (num1 <= 98)
+	for (i = 0; i <= 9; i++)
 	{
-		num2 = num1 + 1;
-		while (num2 <= 99)
+		for (j = 0; j <= 9; j++)
 		{
-			putchar((num1 / 10) + '0');
-			putchar((num1 % 10) + '0');
-			putchar(' ');
-			putchar((num2 / 10) + '0');
-			putchar((num2 % 10) + '0');
-
-			if (num1 == 98 && num2 == 99)
+			if (i != j)
 			{
-				putchar('\n');
-			}
-			else
-			{
-				putchar('.');
+				putchar((i / 10) + '0');
+				putchar((i % 10) + '0');
 				putchar(' ');
+				putchar((j / 10) + '0');
+				putchar((j % 10) + '0');
+				putchar(',');
+				if (i != 9 || j != 8)
+				{
+					putchar(' ');
+				}
 			}
-			num2++;
 		}
-		num1++;
 	}
+	putchar('\n');
 	return (0);
 }
+
