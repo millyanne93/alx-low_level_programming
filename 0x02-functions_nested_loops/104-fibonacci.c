@@ -7,16 +7,16 @@
 int main(void)
 {
 	int count, limit;
-	unsigned int first = 1, second = 2, next_term;
+	uint64_t first = 1, second = 2, next_term;
 
 	limit = 98;
 
-	printf("%u, %u", first, second);
+	printf("%lu, %lu", first, second);
 
 	for (count = 3; count <= limit; count++)
 	{
 		next_term = first + second;
-		printf(", %u", next_term);
+		printf(", %lu", next_term);
 
 		first = second;
 		second = next_term;
