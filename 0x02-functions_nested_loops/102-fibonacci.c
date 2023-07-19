@@ -1,4 +1,4 @@
-#include <stdio.h
+#include <stdio.h>
 /**
  * main - prints the first 50 Fibonacci numbers
  * Return: 0 (Success)
@@ -13,7 +13,7 @@ int main(void)
 		if (i == 0)
 			printf("%ld", j);
 		else if (i == 1)
-			printf(", %d", k);
+			printf(", %ld", k);
 		else
 		{
 			k += j;
