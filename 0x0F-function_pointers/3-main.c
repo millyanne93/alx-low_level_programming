@@ -9,29 +9,30 @@
  * @argv: Array of pointers to the arguments.
  * Return: 0 on success, other values on errors.
  */
-int main(int __attribute__((__unused__)) argc, char *argv[])
+int main(int argc, char *argv[])
 {
-	int num1, num2;
+	int a_int, b_int, result;
 	char *op;
 
 	if (argc != 4)
 	{
-		puts("Error\n");
+		printf("Error\n");
 		exit(98);
 	}
-	num1 = atoi(argv[1]);
+	a_int = atoi(argv[1]);
+	b_int = atoi(argv[3]);
 	op = argv[2];
-	num2 = atoi(argv[3]);
-	if (get_op_func(op) == NULL || op[1] != '\0')
+	if ((*op == '/' || *op == '%') && b_int == 0)
 	{
-		puts("Error\n");
-		exit(99);
-	}
-	if ((*op == '/' && num2 == 0) || (*op == '%' && num2 == 0))
-	{
-		puts("Error\n");
+		printf("Error\n");
 		exit(100);
 	}
-	printf("%d\n", get_op_func(op)(num1, num2));
+	if (!(get_op_func(op)))
+	{
+		printf("Error\n");
+		exit(99);
+	}
+	result = (get_op_func(op))(a_int, b_int);
+	printf("%d\n", result);
 	return (0);
 }
