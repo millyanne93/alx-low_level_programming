@@ -1,6 +1,5 @@
 #include "3-calc.h"
 #include <string.h>
-#include <stlib.h>
 /**
  * get_op_func - selects the correct function to perform the operation
  * @s: the input value
@@ -9,6 +8,8 @@
  */
 int (*get_op_func(char *s))(int, int)
 {
+	int i;
+
 	op_t ops[] = {
 		{"+", op_add},
 		{"-", op_sub},
@@ -17,8 +18,6 @@ int (*get_op_func(char *s))(int, int)
 		{"%", op_mod},
 		{NULL, NULL}
 	};
-	i = 0;
-
 	while (ops[i].op != NULL && *(ops[i].op) != *s)
 		i++;
 	return (ops[i].f);
