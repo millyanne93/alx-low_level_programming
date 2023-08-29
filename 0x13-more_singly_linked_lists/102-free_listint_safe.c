@@ -13,7 +13,7 @@ size_t free_listint_safe(listint_t **h)
 
 	if (!h || !*h)
 		return (0);
-	for (; *h; len++)
+	while (*h)
 	{
 		listint_t *current = *h;
 		*h = (*h)->next;
@@ -21,13 +21,13 @@ size_t free_listint_safe(listint_t **h)
 		{
 			temp = current->next;
 			free(current);
-			current = temp;
 		}
 		else
 		{
 			free(current);
 			break;
 		}
+		len++;
 	}
 	*h = NULL;
 	return (len);
