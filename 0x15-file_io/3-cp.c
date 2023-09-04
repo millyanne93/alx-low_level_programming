@@ -1,122 +1,104 @@
+#include "main.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "main.h"
 
-#define BUFFER_SIZE 1024
-
-void check_argc(int argc);
-int open_file_from(char *file);
-int open_file_to(char *file, int file_from);
-void copy_files(int file_from, int file_to);
-void close_files(int file_from, int file_to);
+char *create_buffer(char *file);
+void close_file(int fd);
 
 /**
- * main - program that copies the content of a file to another file
- * @argc: num argument
- * @argv: string argument
- * Return: 0
+ * create_buffer - Allocates 1024 bytes for a buffer.
+ * @file: The name of the file buffer is storing chars for.
+ *
+ * Return: A pointer to the newly-allocated buffer.
+ */
+char *create_buffer(char *file)
+{
+char *buffer;
+
+buffer = malloc(sizeof(char) * 1024);
+
+if (buffer == NULL)
+{
+dprintf(STDERR_FILENO,
+"Error: Can't write to %s\n", file);
+exit(99);
+}
+
+return (buffer);
+}
+
+/**
+ * close_file - Closes file descriptors.
+ * @fd: The file descriptor to be closed.
+ */
+void close_file(int fd)
+{
+int c;
+
+c = close(fd);
+
+if (c == -1)
+{
+dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd);
+exit(100);
+}
+}
+
+/**
+ * main - Copies the contents of a file to another file.
+ * @argc: The number of arguments supplied to the program.
+ * @argv: An array of pointers to the arguments.
+ *
+ * Return: 0 on success.
+ *
+ * Description: If the argument count is incorrect - exit code 97.
+ * If file_from does not exist or cannot be read - exit code 98.
+ * If file_to cannot be created or written to - exit code 99.
+ * If file_to or file_from cannot be closed - exit code 100.
  */
 int main(int argc, char *argv[])
 {
-	int file_from, file_to;
+int from, to, r, w;
+char *buffer;
 
-	check_argc(argc);
-	file_from = open_file_from(argv[1]);
-	file_to = open_file_to(argv[2], file_from);
-	copy_files(file_from, file_to);
-	close_files(file_from, file_to);
-	return (0);
-}
-
-/**
- * check_argc - checks the number of command line arguments
- * @argc: the number of command line arguments
- *
- * Description: If the number of command line arguments is not equal to 3,
- * prints a usage message and exits with a status of 97.
- */
-void check_argc(int argc)
+if (argc != 3)
 {
-	if (argc != 3)
-		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n"), exit(97);
+dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
+exit(97);
 }
 
-/**
- * open_file_from - opens the source file
- * @file: the name of the source file
- *
- * Return: the file descriptor of the opened source file
- *
- * Description: Attempts to open the source file for reading. If an error
- * occurs, prints an error message and exits 98.
- */
-int open_file_from(char *file)
+buffer = create_buffer(argv[2]);
+from = open(argv[1], O_RDONLY);
+r = read(from, buffer, 1024);
+to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
+
+do {
+if (from == -1 || r == -1)
 {
-	int file_from = open(file, O_RDONLY);
-
-	if (file_from == -1)
-		perror(file), exit(98);
-	return (file_from);
+dprintf(STDERR_FILENO,
+"Error: Can't read from file %s\n", argv[1]);
+free(buffer);
+exit(98);
 }
 
-/**
- * open_file_to - opens the destination file
- * @file: the name of the destination file
- * @file_from: the file descriptor of the source file
- *
- * Return: the file descriptor of the opened destination file
- *
- * Description: Attempts to open the destination file for writing. If it does
- * not exist, creates it with permissions rw-rw-r--. If an error occurs,
- * prints an error message, closes the source file,exits with a status of 99.
- */
-int open_file_to(char *file, int file_from)
+w = write(to, buffer, r);
+if (to == -1 || w == -1)
 {
-	int file_to = open(file, O_WRONLY | O_CREAT | O_TRUNC,
-			S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH);
-	if (file_to == -1)
-		perror(file), close(file_from), exit(99);
-	return (file_to);
+dprintf(STDERR_FILENO,
+"Error: Can't write to %s\n", argv[2]);
+free(buffer);
+exit(99);
 }
 
-/**
- * copy_files - copies the content of one file to another
- * @file_from: the file descriptor of the source file
- * @file_to: the file descriptor of the destination file
- *
- * Description: Reads from the source file and
- * writes to the destination file.
- * If an error occurs, prints an error message and exits
- * with a status of 98 or 99, respectively.
- */
-void copy_files(int file_from, int file_to)
-{
-	int num1 = BUFFER_SIZE, num2 = 0;
-	char buf[BUFFER_SIZE];
+r = read(from, buffer, 1024);
+to = open(argv[2], O_WRONLY | O_APPEND);
 
-	while (num1 == BUFFER_SIZE)
-	{
-		num1 = read(file_from, buf, BUFFER_SIZE);
-		if (num1 == -1)
-			perror("Error: Can't read from file"), exit(98);
-		num2 = write(file_to, buf, num1);
-		if (num2 < num1)
-			perror("Error: Can't write to"), exit(99);
-	}
+}
+while (r > 0);
+free(buffer);
+close_file(from);
+close_file(to);
+
+return (0);
 }
 
-/**
- * close_files - closes two files
- * @file_from: the file descriptor of the first file
- * @file_to: the file descriptor of the second file
- *
- * Description: Attempts to close both files. If an error occurs while closing
- * either file, prints an error message and exits with a status of 100.
- */
-void close_files(int file_from, int file_to)
-{
-	if (close(file_from) == -1)
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", file_from), exit(100);
-	if (close(file_to) == -1)
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", file_to), exit(100);
-}
