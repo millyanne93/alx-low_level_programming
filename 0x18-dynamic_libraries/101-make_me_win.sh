@@ -1,3 +1,3 @@
 #!/bin/bash
-wget -P /tmp https:github.com/millyanne93/alx-low_level_programming/raw/master/0x18-dynamic_libraries/libgiga.so
-export LD_PRELOAD=/tmp/libgiga.so
+gcc -shared -o libgiga.so -fPIC jackpot.c
+export LD_PRELOAD=./libgiga.so:$LD_LIBRARY_PATH
