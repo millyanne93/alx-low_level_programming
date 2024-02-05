@@ -1,6 +1,7 @@
-#**0x1E. C - Search Algorithms**
+# **0x1E. C - Search Algorithms**
 
-##General
+## General
+
 -What is a search algorithm
 -What is a linear search
 -What is a binary search
