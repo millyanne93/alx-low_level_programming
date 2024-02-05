@@ -1,2 +1,2 @@
-0x00. C - Hello, World
+This is for alx projects that are solved using the C language
  
